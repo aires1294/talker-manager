@@ -14,6 +14,16 @@ async function readTalkerData() {
     }
 }
 
+const getTalkerById = async (id) => {
+    try {
+        const talkers = await readTalkerData();
+        return talkers.find((talker) => talker.id === Number(id));
+    } catch (er) {
+        return console.log('Id não encontrado');
+    }
+};
+
 module.exports = {
     readTalkerData,
+    getTalkerById,
 };
