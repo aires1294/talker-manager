@@ -2,8 +2,7 @@ const express = require('express');
 const { 
   readTalkerData, 
   getTalkerById, 
-  validationEmail, 
-  // validationPassword,
+  validation,
   tokenGenerator } = require('./utils/fsUtils');
 
 const app = express();
@@ -35,14 +34,8 @@ app.get('/talker/:id', async (request, response) => {
   return response.status(HTTP_OK_STATUS).json(idTalker); 
 });
 
-// app.post('/login', validationEmail, validationPassword, (request, response) => {
-//   const token = tokenGenerator();
-//   return response.status(HTTP_OK_STATUS).json({ token });
-// });
-app.post('/login', validationEmail, (request, response) => {
-  const token = tokenGenerator();
-  return response.status(HTTP_OK_STATUS).json({ token });
-});
+app.post('/login', validation, (_request, response) => 
+  response.status(HTTP_OK_STATUS).json({ token: tokenGenerator }));
 
 app.listen(PORT, () => {
   console.log('Online');
