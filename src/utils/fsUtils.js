@@ -1,6 +1,6 @@
 const fs = require('fs').promises;
-const crypto = require('crypto');
 const path = require('path');
+const crypto = require('crypto');
 
 const DataPathName = '../talker.json';
 
@@ -24,9 +24,9 @@ const getTalkerById = async (id) => {
     }
 };
 
-const validationEmail = (request, response) => {
+const validationEmail = (request, response, next) => {
         const { email } = request.body;
-        const regex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$/i;
+        const regex = /\S+@\S+\.\S+/g;
         const emailConfirmed = regex.test(email);
 
         if (!email) {
@@ -37,9 +37,11 @@ const validationEmail = (request, response) => {
             return response.status(400)
             .json({ message: 'O "email" deve ter o formato "email@email.com"' }); 
         }
+        console.log('validation email');
+        next();
 };
 
-const validationPassword = (request, response) => {
+const validationPassword = (request, response, next) => {
     const { password } = request.body;
 
     if (!password) {
@@ -51,11 +53,7 @@ const validationPassword = (request, response) => {
         return response.status(400)
         .json({ message: 'O "password" deve ter pelo menos 6 caracteres' });
     }
-};
-
-const validation = (request, response, next) => {
-    validationPassword(request, response);
-    validationEmail(request, response);
+    console.log('validation password');
     next();
 };
 
@@ -64,6 +62,7 @@ const tokenGenerator = () => crypto.randomBytes(8).toString('hex');
 module.exports = {
     readTalkerData,
     getTalkerById,
-    validation,
+    validationEmail,
+    validationPassword,
     tokenGenerator,
 };
