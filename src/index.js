@@ -1,5 +1,10 @@
 const express = require('express');
-const { readTalkerData, getTalkerById } = require('./utils/fsUtils');
+const { 
+  readTalkerData, 
+  getTalkerById, 
+  validationEmail, 
+  // validationPassword,
+  tokenGenerator } = require('./utils/fsUtils');
 
 const app = express();
 app.use(express.json());
@@ -28,6 +33,15 @@ app.get('/talker/:id', async (request, response) => {
     return response.status(HTTP_FAIL).send({ message: 'Pessoa palestrante não encontrada' });
   }
   return response.status(HTTP_OK_STATUS).json(idTalker); 
+});
+
+// app.post('/login', validationEmail, validationPassword, (request, response) => {
+//   const token = tokenGenerator();
+//   return response.status(HTTP_OK_STATUS).json({ token });
+// });
+app.post('/login', validationEmail, (request, response) => {
+  const token = tokenGenerator();
+  return response.status(HTTP_OK_STATUS).json({ token });
 });
 
 app.listen(PORT, () => {
