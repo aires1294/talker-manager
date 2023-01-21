@@ -4,7 +4,15 @@ const {
   getTalkerById, 
   validationEmail,
   validationPassword,
-  tokenGenerator } = require('./utils/fsUtils');
+  tokenGenerator,
+  validationToken,
+  validationName,
+  validationAge,
+  validationTalk,
+  validationwatchedAt,
+  validationRate,
+  validationRate2, 
+  writeFile } = require('./utils/fsUtils');
 
 const app = express();
 app.use(express.json());
@@ -39,6 +47,26 @@ app.post('/login', validationEmail, validationPassword, (_request, response) => 
   const token = tokenGenerator();
   console.log(token);
   return response.status(HTTP_OK_STATUS).json({ token });
+});
+
+app.post('/talker', 
+validationToken,
+validationName,
+validationAge,
+validationTalk,
+validationwatchedAt,
+validationRate,
+validationRate2, async (request, response) => {
+  try {
+    const { body } = request;
+  const talkers = await readTalkerData();
+  const id = talkers.length + 1;
+  const newTalker = { id, ...body };
+  await writeFile(newTalker);
+  return response.status(201).json(newTalker);
+    } catch (err) {
+      console.log(err);
+    }
 });
 
 app.listen(PORT, () => {
