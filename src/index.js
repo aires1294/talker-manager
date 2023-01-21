@@ -60,9 +60,12 @@ validationRate2, async (request, response) => {
   try {
     const { body } = request;
   const talkers = await readTalkerData();
+  console.log('agoraaa', talkers);
   const id = talkers.length + 1;
   const newTalker = { id, ...body };
-  await writeFile(newTalker);
+  console.log('olaaaaa', talkers);
+  talkers.push(newTalker);
+  await writeFile(talkers);
   return response.status(201).json(newTalker);
     } catch (err) {
       console.log(err);

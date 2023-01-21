@@ -16,7 +16,7 @@ async function readTalkerData() {
 }
 
 const writeFile = async (talkers) => {
-    await fs.writeFile('src/talker.json', talkers);
+    await fs.writeFile('src/talker.json', JSON.stringify(talkers));
 };
 
 const getTalkerById = async (id) => {
@@ -119,7 +119,7 @@ const validationTalk = (request, response, next) => {
 const validationwatchedAt = (request, response, next) => {
     const { watchedAt } = request.body.talk;
     console.log(watchedAt);
-    const regex = /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(0[1-9]|1[1-9]|2[1-9])$/;
+    const regex = /^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/i;
     const dateConfirmed = regex.test(watchedAt);
     if (!watchedAt) {
         return response.status(400)
@@ -153,7 +153,7 @@ const validationRate = (request, response, next) => {
     const validationRate2 = (request, response, next) => {
         const { rate } = request.body.talk;
         console.log(rate);
-        if (!Number.isInteger(rate) || rate < 5 || rate < 1) {
+        if (!Number.isInteger(rate) || rate < 1 || rate > 5) {
                     return response.status(400)
                     .json({ message: 'O campo "rate" deve ser um inteiro de 1 à 5' });
                 }
