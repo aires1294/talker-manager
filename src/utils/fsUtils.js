@@ -153,18 +153,16 @@ const validationRate = (request, response, next) => {
     const validationRate2 = (request, response, next) => {
         const { rate } = request.body.talk;
         console.log(rate);
-        if (!Number.isInteger(rate) || rate < 1 || rate > 5) {
+        if (!Number.isInteger(rate)) {
+                    return response.status(400)
+                    .json({ message: 'O campo "rate" deve ser um inteiro de 1 à 5' });
+                }
+        if (rate < 1 || rate > 5) {
                     return response.status(400)
                     .json({ message: 'O campo "rate" deve ser um inteiro de 1 à 5' });
                 }
         next();
 };
-//     if (!Number.isInteger(rate) || rate < 5 || rate < 1) {
-//         return response.status(400)
-//         .json({ message: 'O campo "rate" deve ser um inteiro de 1 à 5' });
-//     }
-//     next();
-// };
 
 module.exports = {
     readTalkerData,

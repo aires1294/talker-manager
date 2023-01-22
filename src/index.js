@@ -60,16 +60,40 @@ validationRate2, async (request, response) => {
   try {
     const { body } = request;
   const talkers = await readTalkerData();
-  console.log('agoraaa', talkers);
+  // console.log('agoraaa', talkers);
   const id = talkers.length + 1;
   const newTalker = { id, ...body };
-  console.log('olaaaaa', talkers);
+  // console.log('olaaaaa', talkers);
   talkers.push(newTalker);
   await writeFile(talkers);
   return response.status(201).json(newTalker);
     } catch (err) {
       console.log(err);
     }
+});
+
+app.put('/talker/:id', 
+validationToken,
+validationName,
+validationAge,
+validationTalk,
+validationwatchedAt,
+validationRate,
+validationRate2, async (request, response) => {
+  try {
+    const { id } = request.params;
+    const talkerId = Number(id);
+    const talkers = await readTalkerData();
+    // const { name, age, talk: { watchedAt, rate } } = request.body;
+    const index = talkers.findIndex((element) => element.id === Number(id));
+    const talker = { id: talkerId, ...request.body };
+    talkers[index] = talker;
+    const updateTalkers = JSON.stringify(talkers, null, 2);
+    await writeFile(updateTalkers);
+    return response.status(HTTP_OK_STATUS).json(talkers[index]);
+  } catch (err) {
+    console.log((err));
+  }
 });
 
 app.listen(PORT, () => {
