@@ -36,6 +36,7 @@ app.get('/talker', async (_request, response) => {
 
 app.get('/talker/:id', async (request, response) => {
   const { id } = request.params;
+  // console.log(id);
   const idTalker = await getTalkerById(id);
   if (!idTalker) {
     return response.status(HTTP_FAIL).send({ message: 'Pessoa palestrante não encontrada' });
@@ -82,14 +83,15 @@ validationRate,
 validationRate2, async (request, response) => {
   try {
     const { id } = request.params;
+    console.log(id);
+    
     const talkerId = Number(id);
+    console.log('aloooooooo', talkerId);
     const talkers = await readTalkerData();
-    // const { name, age, talk: { watchedAt, rate } } = request.body;
     const index = talkers.findIndex((element) => element.id === Number(id));
     const talker = { id: talkerId, ...request.body };
     talkers[index] = talker;
-    const updateTalkers = JSON.stringify(talkers, null, 2);
-    await writeFile(updateTalkers);
+    await writeFile(talkers);
     return response.status(HTTP_OK_STATUS).json(talkers[index]);
   } catch (err) {
     console.log((err));
