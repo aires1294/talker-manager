@@ -98,6 +98,21 @@ validationRate2, async (request, response) => {
   }
 });
 
+app.delete('/talker/:id', 
+validationToken, async (request, response) => {
+  try {
+    const { id } = request.params;
+    const talkers = await readTalkerData();
+    const filteredTalkers = talkers.filter((talkerDelete) => talkerDelete.id !== Number(id));
+    const updatedTalkers = JSON.stringify(filteredTalkers, null, 2);
+    await writeFile(updatedTalkers);
+    response.status(204).end();
+    console.log(id);
+  } catch (err) {
+    response.status(401).send((err));
+  }
+});
+
 app.listen(PORT, () => {
   console.log('Online');
 });
