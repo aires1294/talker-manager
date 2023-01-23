@@ -50,7 +50,7 @@ validationRate2, async (request, response) => {
   // console.log('olaaaaa', talkers);
   talkers.push(newTalker);
   await writeFile(talkers);
-  return response.status(201).json(newTalker);
+  response.status(201).send(newTalker);
     } catch (err) {
       console.log(err);
     }
