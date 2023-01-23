@@ -28,6 +28,17 @@ const getTalkerById = async (id) => {
     }
 };
 
+const deleteTalkerById = async (id) => {    
+    try {
+        const talkers = await readTalkerData();
+        const filteredTalkers = talkers.filter((talkerDelete) => talkerDelete.id !== Number(id));
+        const updatedTalkers = JSON.stringify(filteredTalkers, null, 2);
+        await writeFile(updatedTalkers);
+    } catch (err) {
+        console.log(err);
+    }
+};
+
 const validationEmail = (request, response, next) => {
         const { email } = request.body;
         const regex = /\S+@\S+\.\S+/g;
@@ -164,6 +175,19 @@ const validationRate = (request, response, next) => {
         next();
 };
 
+// const validateQuery = (request, response) => {
+//     const { q } = request.query;
+//   const talkers = readTalkerData();
+//   const talker = talkers.filter((element) => element.name.includes(q));
+//   if (!q) {
+//     return response.status(200).json(talkers);
+//   }
+//   if (!talker) {
+//     return response.status(200).json([]);
+//   }
+//   return response.status(200).json(talker);
+// };
+
 module.exports = {
     readTalkerData,
     getTalkerById,
@@ -178,4 +202,5 @@ module.exports = {
     validationRate,
     validationRate2,
     writeFile,
+    deleteTalkerById,
                 };
