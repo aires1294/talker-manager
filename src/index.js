@@ -29,7 +29,7 @@ app.get('/', (_request, response) => {
 
 app.post('/login', validationEmail, validationPassword, (_request, response) => {
   const token = tokenGenerator();
-  console.log(token);
+  // console.log(token);
   return response.status(HTTP_OK_STATUS).json({ token });
 });
 
@@ -69,7 +69,7 @@ validationRate2, async (request, response) => {
     console.log(id);
     
     const talkerId = Number(id);
-    console.log('aloooooooo', talkerId);
+    // console.log('aloooooooo', talkerId);
     const talkers = await readTalkerData();
     const index = talkers.findIndex((element) => element.id === Number(id));
     const talker = { id: talkerId, ...request.body };
